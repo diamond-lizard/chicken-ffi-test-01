@@ -1,0 +1,4 @@
+chicken-ffi-test-01
+chicken-ffi-test-01.c
+*.o
+*.so

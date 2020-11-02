@@ -1,0 +1,46 @@
+NAME	:= chicken-ffi-test-01
+
+C_HEADERS		:=
+C_HEADERS		+= lib$(NAME).h
+
+C_SOURCES		:=
+C_SOURCES		+= lib$(NAME).c
+
+C_SHARED_LIB		:=
+C_SHARED_LIB		+= lib$(NAME).so
+
+SCHEME_SOURCES 		:=
+SCHEME_SOURCES 		+= $(NAME).scm
+
+BINARY			:= $(NAME)
+OBJECTS			:= $(NAME).o
+SCHEME_SHARED_LIB	:= $(NAME).so
+
+LIB_DIR			:= $(HOME)/lib
+
+INTERMEDIATE_FILES	:=
+INTERMEDIATE_FILES	+= $(NAME).c
+
+FILES_TO_CLEAN_UP       :=
+FILES_TO_CLEAN_UP       += $(BINARY)
+FILES_TO_CLEAN_UP       += $(C_SHARED_LIB)
+FILES_TO_CLEAN_UP       += $(INTERMEDIATE_FILES)
+FILES_TO_CLEAN_UP       += $(OBJECTS)
+FILES_TO_CLEAN_UP       += $(SCHEME_SHARED_LIB)
+
+all: $(BINARY) $(C_SHARED_LIB) install $(SCHEME_SHARED_LIB)
+
+clean:
+	rm -f $(FILES_TO_CLEAN_UP)
+
+$(BINARY): $(SCHEME_SOURCES)
+	GCC_COLORS='' csc -k $<
+
+$(C_SHARED_LIB): $(C_HEADERS)
+	GCC_COLORS='' gcc -shared -o $@ $(C_HEADERS) $(C_SOURCES)
+
+$(SCHEME_SHARED_LIB): $(SCHEME_SOURCES)
+	GCC_COLORS='' csc -k -L$(LIB_DIR) -L -l$(NAME) -s $<
+
+install: $(C_SHARED_LIB)
+	cp $< $(LIB_DIR)
