@@ -2,6 +2,8 @@
 This test simply compiles a Chicken module out of a C shared library made of a C header with a function that does nothing.
 
 The purpose of this test is just to test whether the simplest of compilation and linking of C shared libraries works.
+* Tested on
+** Chicken 5.2.0 on amd64 Gentoo Linux
 * License
 Copyright (C) 2020  Sergey Goldgaber
 
